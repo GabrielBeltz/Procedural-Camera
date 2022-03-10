@@ -14,25 +14,33 @@ public class CameraVolumeEditor : Editor
         switch(script.CameraVolumeType)
         {
             case CameraVolumeType.FixatedLookAt:
+                EditorGUILayout.Space(5f);
                 EditorGUILayout.BeginFoldoutHeaderGroup(true, "Fixated Angle Follow");
+
                 script.Position = EditorGUILayout.Vector3Field("Position:", script.Position);
                 if(GUILayout.Button("Copiar posição do GameObject selecionado."))
                     script.Position = Selection.activeGameObject.transform.position;
+
                 script.Target = EditorGUILayout.ObjectField("Target: ", script.Target, typeof(Transform), true) as Transform;
                 if(GUILayout.Button("Pegar ref do GameObject selecionado."))
                     script.Target = Selection.activeGameObject.transform;
-                EditorGUILayout.Space(25f);
+
+                EditorGUILayout.Space(5f);
                 EditorGUILayout.EndFoldoutHeaderGroup();
                 break;
             case CameraVolumeType.FixatedAngleFollow:
+                EditorGUILayout.Space(5f);
                 EditorGUILayout.BeginFoldoutHeaderGroup(true, "Fixated Angle Follow");
+
                 script.Angle = EditorGUILayout.Vector3Field("Angle:", script.Angle);
                 if(GUILayout.Button("Copiar ângulo do GameObject selecionado."))
                     script.Angle = Selection.activeGameObject.transform.rotation.eulerAngles;
+
                 script.Target = EditorGUILayout.ObjectField("Target: ", script.Target, typeof(Transform), true) as Transform;
                 if(GUILayout.Button("Pegar ref do GameObject selecionado."))
                     script.Target = Selection.activeGameObject.transform;
-                EditorGUILayout.Space(25f);
+
+                EditorGUILayout.Space(5f);
                 EditorGUILayout.EndFoldoutHeaderGroup();
                 break;
         }
