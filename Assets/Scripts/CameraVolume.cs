@@ -8,14 +8,15 @@ public class CameraVolume : MonoBehaviour
     [HideInInspector] public CameraVolumeType CameraVolumeType;
     // Variáveis que são usadas ou não dependendo do tipo de câmera | Sim, são variáveis que tem uso variado | Variáveis variáveis
     [HideInInspector] public Transform Target;
-    [HideInInspector] public Vector3 Angle, PositionA, PositionB;
+    [HideInInspector] public Vector3 PositionA, PositionB;
+    [HideInInspector] public Quaternion Rotation;
     [HideInInspector][Range(-0.5f, 1.5f)] public float ScreenX = 0.5f, ScreenY = 0.5f;
 
     [Header("Configs Globais")]
     [SerializeField] bool IsActive;
     [Range(10f, 120f)] public float FieldOfView = 60;
     public Camera Camera;
-    public string TargetTag;
+    [HideInInspector] public string TargetTag;
     CinemachineVirtualCamera _virtualCamera;
 
     void Awake()
@@ -42,8 +43,6 @@ public class CameraVolume : MonoBehaviour
     void OnEnable() => ExecuteBehaviour();
 
     void ValidateCamera() => enabled = Camera != null;
-
-    void OnDisable() => Debug.LogWarning($"{gameObject.name} desativado. Isso pode ter sido causado pela referência perdida de câmera.");
 
     #region Behaviours
 
@@ -76,6 +75,7 @@ public class CameraVolume : MonoBehaviour
 
     void FixatedLookAtBehaviour()
     {
+        _virtualCamera.ForceCameraPosition(PositionA, Rotation);
     }
 
     void FollowPlayerBehaviour()
@@ -84,6 +84,17 @@ public class CameraVolume : MonoBehaviour
 
     void DollyBehaviour()
     {
+        // Achar a posição entre 2 pontos em 3D para colocar a câmera
+        // Ideia 1: Simplificar a posição 3D em 2D usando a direção da linha como o eixo fixo, e posicionando a altura e distância do ponto A
+        if (Target == null) return;
+
+
+        // Direção da linha
+        Vector3 normal = PositionA - PositionB;
+        // Tamanho da linha
+        float size = Vector3.Distance(Vector3.zero, normal);
+
+
     }
 
     void FirstPersonBehaviour()
