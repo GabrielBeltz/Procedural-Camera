@@ -36,7 +36,7 @@ public class CameraVolume : MonoBehaviour
     
     void OnTriggerEnter(Collider other) => SetActivation(other.CompareTag(TargetTag));
     
-    void OnTriggerExit(Collider other) => SetActivation(other.CompareTag(TargetTag));
+    void OnTriggerExit(Collider other) => SetActivation(!other.CompareTag(TargetTag));
 
     void SetActivation(bool active) => IsActive = active;
 
