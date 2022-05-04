@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         else { FinalMove = new Vector3(0, _rb.velocity.y, 0); }
 
         _rb.velocity = new Vector3(FinalMove.x, _rb.velocity.y, FinalMove.z);
-        _rb.velocity = new Vector3(Mathf.Clamp(_rb.velocity.x, -MoveSpeed, MoveSpeed), _rb.velocity.y, Mathf.Clamp(_rb.velocity.z, -MoveSpeed, MoveSpeed));
+        _rb.velocity = new Vector3(Mathf.Clamp(_rb.velocity.x, -MoveSpeed, MoveSpeed), 0, Mathf.Clamp(_rb.velocity.z, -MoveSpeed, MoveSpeed));
         _rb.angularVelocity = Vector3.zero;
 
         animator.SetFloat("Speed", Vector3.Distance(Vector3.zero, new Vector3(FinalMove.x, 0, FinalMove.z)));

@@ -51,6 +51,8 @@ public class MixingCameraController : MonoBehaviour
         StartCoroutine(ResetCameraCoroutine);
     }
 
+    public void SetSmoothing(float value) => Smoothing = value;
+
     IEnumerator ResetCamera()
     {
         yield return new WaitForSecondsRealtime(0.2f);
