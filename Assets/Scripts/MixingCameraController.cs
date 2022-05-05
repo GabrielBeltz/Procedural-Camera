@@ -15,47 +15,31 @@ public class MixingCameraController : MonoBehaviour
     private void LateUpdate()
     {
         if(_behaviourCalled) return;
-        MixingCamera.m_Weight0 = Mathf.Clamp01(MixingCamera.m_Weight0 + step);
-        MixingCamera.m_Weight1 = Mathf.Clamp01(MixingCamera.m_Weight1 - step);
-        MixingCamera.m_Weight2 = Mathf.Clamp01(MixingCamera.m_Weight2 - step);
-        MixingCamera.m_Weight3 = Mathf.Clamp01(MixingCamera.m_Weight3 - step);
+        IncreaseWeight(CameraVolumeType.FollowPlayer);
     }
 
     public void CallBehaviour(CameraVolumeType type)
     {
-        switch (type)
-        {
-            case CameraVolumeType.Fixated:
-                MixingCamera.m_Weight0 = Mathf.Clamp01(MixingCamera.m_Weight0 - step);
-                MixingCamera.m_Weight1 = Mathf.Clamp01(MixingCamera.m_Weight1 + step);
-                MixingCamera.m_Weight2 = Mathf.Clamp01(MixingCamera.m_Weight2 - step);
-                MixingCamera.m_Weight3 = Mathf.Clamp01(MixingCamera.m_Weight3 - step);
-                break;
-            case CameraVolumeType.Dolly:
-                MixingCamera.m_Weight0 = Mathf.Clamp01(MixingCamera.m_Weight0 - step);
-                MixingCamera.m_Weight1 = Mathf.Clamp01(MixingCamera.m_Weight1 - step);
-                MixingCamera.m_Weight2 = Mathf.Clamp01(MixingCamera.m_Weight2 + step);
-                MixingCamera.m_Weight3 = Mathf.Clamp01(MixingCamera.m_Weight3 - step);
-                break;
-            case CameraVolumeType.FirstPerson:
-                MixingCamera.m_Weight0 = Mathf.Clamp01(MixingCamera.m_Weight0 - step);
-                MixingCamera.m_Weight1 = Mathf.Clamp01(MixingCamera.m_Weight1 - step);
-                MixingCamera.m_Weight2 = Mathf.Clamp01(MixingCamera.m_Weight2 - step);
-                MixingCamera.m_Weight3 = Mathf.Clamp01(MixingCamera.m_Weight3 + step);
-                break;
-        }
-
+        IncreaseWeight(type);
         _behaviourCalled = true;
         if(ResetCameraCoroutine != null) StopCoroutine(ResetCameraCoroutine);
         ResetCameraCoroutine = ResetCamera();
         StartCoroutine(ResetCameraCoroutine);
     }
 
+    void IncreaseWeight(CameraVolumeType type)
+    {
+        MixingCamera.m_Weight0 = Mathf.Clamp01(MixingCamera.m_Weight0 + (type == CameraVolumeType.FollowPlayer? step : -step));
+        MixingCamera.m_Weight1 = Mathf.Clamp01(MixingCamera.m_Weight1 + (type == CameraVolumeType.Fixated? step : -step));
+        MixingCamera.m_Weight2 = Mathf.Clamp01(MixingCamera.m_Weight2 + (type == CameraVolumeType.Dolly? step : -step));
+        MixingCamera.m_Weight3 = Mathf.Clamp01(MixingCamera.m_Weight3 + (type == CameraVolumeType.FirstPerson? step : -step));
+    }
+
     public void SetSmoothing(float value) => Smoothing = value;
 
     IEnumerator ResetCamera()
     {
-        yield return new WaitForSecondsRealtime(0.2f);
+        yield return new WaitForSecondsRealtime(0.1f);
         _behaviourCalled = false;
     }
 }

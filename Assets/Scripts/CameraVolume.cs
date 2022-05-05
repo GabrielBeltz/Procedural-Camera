@@ -42,4 +42,4 @@ public class CameraVolume : MonoBehaviour
     #endregion
 }
 
-public enum CameraVolumeType { Fixated, Dolly, FirstPerson }
+public enum CameraVolumeType { Fixated, Dolly, FirstPerson, FollowPlayer }
